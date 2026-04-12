@@ -64,12 +64,13 @@
   function initializeUi() {
     imageList.innerHTML = "";
     images.forEach(function (item) {
+      const isActive = Boolean(currentImage && currentImage.url === item.url);
       const row = document.createElement("div");
       row.className = "image-row";
 
       const selectButton = document.createElement("button");
       selectButton.type = "button";
-      selectButton.className = "image-select-button" + (currentImage && currentImage.url === item.url ? " is-active" : "");
+      selectButton.className = "image-select-button" + (isActive ? " is-active" : "");
       selectButton.addEventListener("click", function () {
         setImage(item, true);
       });
@@ -89,7 +90,7 @@
 
       const deleteButton = document.createElement("button");
       deleteButton.type = "button";
-      deleteButton.className = "image-delete-button";
+      deleteButton.className = "image-delete-button" + (isActive ? "" : " is-hidden");
       deleteButton.setAttribute("aria-label", 'Delete "' + item.name + '"');
       deleteButton.title = "Delete";
       const deleteIcon = document.createElement("img");

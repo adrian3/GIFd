@@ -198,6 +198,7 @@ button:disabled,
   display: block;
   width: 54px;
   height: 40px;
+  border: 1px solid transparent;
   border-radius: 4px;
   object-fit: cover;
   margin: 0;
@@ -209,6 +210,15 @@ button:disabled,
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.image-select-button.is-active .image-thumbnail {
+  border-color: #cc3300;
+}
+
+.image-select-button.is-active .image-name {
+  font-weight: 700;
+  text-decoration: underline;
 }
 
 .image-delete-button,
@@ -232,6 +242,10 @@ button:disabled,
   width: 34px;
   min-width: 34px;
   margin: 0 0 5px 0;
+}
+
+.image-delete-button.is-hidden {
+  display: none;
 }
 
 .delete-icon {

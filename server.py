@@ -8,6 +8,7 @@ import shutil
 import subprocess
 import tempfile
 import urllib.parse
+import webbrowser
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
@@ -16,9 +17,9 @@ ROOT = pathlib.Path(__file__).resolve().parent
 IMAGES_ROOT_DIR = ROOT / "images"
 APP_IMAGES_DIR = IMAGES_ROOT_DIR / "app"
 LIBRARY_IMAGES_DIR = IMAGES_ROOT_DIR / "library"
+GIFS_IMAGES_DIR = IMAGES_ROOT_DIR / "gifs"
 DEMO_IMAGES_DIR = APP_IMAGES_DIR / "demo images"
 CATALOG_PATH = LIBRARY_IMAGES_DIR / "images.json"
-DEMO_SEED_MARKER_PATH = LIBRARY_IMAGES_DIR / ".demo-seeded"
 HOST = "127.0.0.1"
 PORT = 4173
 MAX_VIEWER_DIMENSION = 2048
@@ -31,6 +32,7 @@ GIF_COLORS = 256
 def ensure_image_directories():
     APP_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
     LIBRARY_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
+    GIFS_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def ensure_catalog_file():
@@ -51,8 +53,6 @@ def seed_demo_images_if_needed():
     ensure_catalog_file()
     items = load_catalog()
     if items:
-        return
-    if DEMO_SEED_MARKER_PATH.exists():
         return
 
     demo_stems = ("demo-1", "demo-2", "demo-3")
@@ -91,7 +91,6 @@ def seed_demo_images_if_needed():
         })
 
     save_catalog(seeded_items)
-    DEMO_SEED_MARKER_PATH.write_text("seeded\n", encoding="utf-8")
 
 
 def image_path_from_catalog(path_value):
@@ -417,6 +416,14 @@ def viewer_mode_label(viewer_mode):
     return "3d"
 
 
+def gif_color_label(color_mode, colors):
+    if color_mode == "blackAndWhite":
+        return "bw"
+    if color_mode == "grayscale":
+        return f"gray{colors}"
+    return f"color{colors}"
+
+
 def build_gif_offsets(frame_count, strength, viewer_mode):
     offsets = []
     for index in range(frame_count):
@@ -447,12 +454,14 @@ def export_parallax_gif(url, settings):
     strength = max(2.0, min(float(settings.get("viewerStrength", settings.get("strength", 14))), 40.0))
     viewer_mode = normalize_viewer_mode(settings.get("viewerMode"))
     mode_label = viewer_mode_label(viewer_mode)
-    gif_path = image_path.parent / f"{item['url']}_{mode_label}.gif"
     frame_count = max(8, min(int(settings.get("frameCount", GIF_FRAME_COUNT)), 36))
     max_dimension = max(320, min(int(settings.get("maxDimension", GIF_MAX_DIMENSION)), 1600))
     delay = max(2, min(int(settings.get("delay", GIF_DELAY)), 20))
     color_mode = normalize_color_mode(settings.get("colorMode"), settings.get("blackAndWhite"))
     colors = max(2, min(int(settings.get("colors", GIF_COLORS)), 256))
+    color_label = gif_color_label(color_mode, colors)
+    gif_filename = f"{item['url']}_{mode_label}_w{max_dimension}_{color_label}.gif"
+    gif_path = GIFS_IMAGES_DIR / gif_filename
     dithering_mode = settings.get("ditheringMode", "FloydSteinberg")
     width, height = scale_dimensions(*read_image_size(image_path), max_dimension)
 
@@ -662,6 +671,7 @@ class AppHandler(SimpleHTTPRequestHandler):
                 image_dir / f"{item['url']}_tilt.gif",
                 image_dir / f"{item['url']}_parallax.gif"
             ]
+            gif_paths.extend(GIFS_IMAGES_DIR.glob(f"{item['url']}_*.gif"))
             if image_path.exists():
                 image_path.unlink()
             if depth_path.exists():
@@ -698,7 +708,13 @@ def main():
     seed_demo_images_if_needed()
     server = ThreadingHTTPServer((HOST, PORT), AppHandler)
     print(f"Serving Depth3DViewer at http://{HOST}:{PORT}")
-    print("Drop a spatial HEIC onto the page to import it.")
+    app_url = f"http://{HOST}:{PORT}/app.html"
+    print(f"Open the full app at {app_url}")
+    print("Drop a spatial HEIC onto the app page to import it.")
+    try:
+        webbrowser.open(app_url, new=2)
+    except Exception:
+        pass
     server.serve_forever()
 
 

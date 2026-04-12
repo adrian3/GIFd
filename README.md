@@ -64,11 +64,21 @@ ffmpeg -version
 python3 server.py
 ```
 
-7. Open the app in your browser:
+7. Open the full app in your browser:
 
 [http://127.0.0.1:4173][1]
 
 8. Stop the app anytime with `Ctrl + C` in Terminal.
+
+## GitHub Pages demo mode
+
+Use [`index.html`][5] for a static hosted demo (no backend required):
+
+- shows the 3 starter demo images
+- supports interactive depth preview and direction modes
+- read-only demo list (no delete/reset actions)
+- does not support HEIC upload
+- does not support GIF generation/export
 
 ## Basic workflow
 
@@ -85,6 +95,7 @@ python3 server.py
 - Bundled/static app assets: [`images/app/`][2]
 - Demo starter images (seeded on first run): [`images/app/demo images/`][4]
 - Imported/generated user assets: [`images/library/`][3]
+- Generated GIF exports (local, not committed): `images/gifs/`
 - Local catalog metadata (not committed): `images/library/images.json`
 
 ## Project structure
@@ -92,6 +103,7 @@ python3 server.py
 ```text
 GIFd/
   index.html
+  app.html
   server.py
   README.md
   css/
@@ -108,7 +120,7 @@ GIFd/
 
 ## Notes
 
-- Run through `python3 server.py`; do not open `index.html` with `file://`.
+- Run through `python3 server.py`; do not open `app.html` with `file://`.
 - HEIC conversion depends on local native tools listed above.
 - On first run, the app copies 3 demo image sets from `images/app/demo images/` into `images/library/`.
 - `images/library/` is intended for local/runtime files and is ignored by Git (except `.gitkeep`).
@@ -121,11 +133,12 @@ GIFd/
   - confirm `heif-convert`, `exiftool`, and `magick` are installed
   - restart `server.py`
 - Viewer loads but image/depth fails:
-  - open the app from `http://127.0.0.1:4173`
+  - open the app from `http://127.0.0.1:4173/app.html`
 - GIF output not as expected:
   - review mode, colors, dithering, frame count, width, and frame duration in GIF settings
 
-[1]:	http://127.0.0.1:4173
+[1]:	http://127.0.0.1:4173/app.html
 [2]:	/Users/adehanft/Desktop/GIFd/images/app
 [3]:	/Users/adehanft/Desktop/GIFd/images/library
 [4]:	/Users/adehanft/Desktop/GIFd/images/app/demo images
+[5]:	/Users/adehanft/Desktop/GIFd/index.html

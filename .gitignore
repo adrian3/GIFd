@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 images/library/**
 !images/library/.gitkeep
+images/gifs/**
+!images/gifs/.gitkeep

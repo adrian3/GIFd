@@ -5,11 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="A tool for making animated gifs from an Spatial HEIC photo taken with an iPhone"
+      content="Static GIF'd demo with depth preview only."
     />
-    <title>Depth3DViewer</title>
+    <title>GIF'd Demo</title>
     <link rel="stylesheet" href="./css/whisper.css" />
     <link rel="stylesheet" href="./css/styles.css" />
+    <style>
+      .demo-image-list-offset {
+        margin-top: 50px;
+      }
+    </style>
   </head>
   <body>
     <div class="app-shell">
@@ -22,17 +27,10 @@
 
       <main class="viewer-shell">
         <aside class="image-panel">
-          <section id="dropZone" class="drop-zone">
-            <div class="drop-zone-actions">
-              <button id="uploadButton" class="action-button" type="button">
-                Upload spatial HEIC
-              </button>
-            </div>
-            <p class="drop-zone-helper">(or drag images into this window)</p>
-          </section>
-          <input id="uploadInput" type="file" accept=".heic,.HEIC" hidden />
-          <div id="imageList" class="image-list" aria-label="Image library"></div>
+          <div id="imageList" class="image-list demo-image-list-offset" aria-label="Demo image library"></div>
+          <p class="drop-zone-helper">View the <a href="./README.md" target="_blank" rel="noopener noreferrer">readme</a> for info about how to install this tool on your computer.</p>
         </aside>
+
         <section class="viewer-panel">
           <div class="viewer-stage">
             <div id="viewer"></div>
@@ -53,107 +51,36 @@
               </select>
             </label>
             <div class="viewer-action-buttons">
-            <button id="saveGifButton" class="action-button" type="button">Make GIF</button>
-              <button id="gifSettingsButton" class="action-button icon-button" type="button" aria-label="Gif settings">
-                <img src="./images/app/gear.svg" alt="" class="button-icon" aria-hidden="true" />
-              </button>
+              <button id="exampleGifButton" class="action-button" type="button">Example GIF</button>
             </div>
           </div>
         </section>
       </main>
     </div>
 
-    <dialog id="gifSettingsDialog" class="gif-dialog">
-      <form method="dialog" class="gif-dialog-form">
-        <header class="gif-dialog-header">
-          <h2>Gif settings</h2>
-        </header>
-
-        <div class="gif-dialog-body">
-          <label class="gif-settings-field has-select">
-            <span>Color mode</span>
-            <select id="gifColorModeInput">
-              <option value="color">Color</option>
-              <option value="grayscale">Grayscale</option>
-              <option value="blackAndWhite">Black and white</option>
-            </select>
-          </label>
-          <label class="gif-settings-field">
-            <span>Colors</span>
-            <input id="gifColorsInput" type="number" min="2" max="256" step="1" />
-          </label>
-          <label class="gif-settings-field has-select">
-            <span>Dithering</span>
-            <select id="gifDitheringModeInput">
-              <option value="None">None</option>
-              <option value="FloydSteinberg">Floyd-Steinberg</option>
-              <option value="Riemersma">Riemersma</option>
-              <option value="Ordered">Ordered</option>
-              <option value="Jarvis">Jarvis</option>
-            </select>
-          </label>
-          <label class="gif-settings-field">
-            <span>Frames</span>
-            <input id="gifFramesInput" type="number" min="8" max="36" step="1" />
-          </label>
-          <label class="gif-settings-field">
-            <span>Image width</span>
-            <input id="gifSizeInput" type="number" min="320" max="1600" step="10" />
-          </label>
-          <label class="gif-settings-field">
-            <span>Frame duration (ms)</span>
-            <input id="gifDelayInput" type="number" min="2" max="20" step="1" />
-          </label>
-        </div>
-
-        <footer class="gif-dialog-actions">
-          <button id="gifDefaultsButton" class="action-button" type="button">
-            Use defaults
-          </button>
-          <button id="gifSaveButton" class="action-button" type="button">
-            Update
-          </button>
-          <button class="action-button" value="cancel">
-            Cancel
-          </button>
-        </footer>
-      </form>
-    </dialog>
-
-    <dialog id="gifPreviewDialog" class="gif-dialog gif-preview-dialog">
+    <dialog id="exampleGifDialog" class="gif-dialog gif-preview-dialog">
       <form method="dialog" class="gif-dialog-form gif-preview-form">
         <header class="gif-dialog-header">
-          <span class="brand-kicker">Export</span>
-          <h2 id="gifPreviewTitle">Gif preview</h2>
-          <p id="gifPreviewSubtitle" class="gif-preview-subtitle"></p>
+          <h2 id="exampleGifTitle">Example GIF</h2>
         </header>
 
         <div class="gif-preview-stage">
-          <div id="gifPreviewProgress" class="gif-preview-progress">
+          <div id="exampleGifProgress" class="gif-preview-progress">
             <div class="gif-spinner" aria-hidden="true"></div>
-            <p>Generating preview...</p>
+            <p>Loading example GIF...</p>
           </div>
-          <img id="gifPreviewImage" class="gif-preview-image" alt="GIF preview" hidden />
+          <img id="exampleGifImage" class="gif-preview-image" alt="Example GIF preview" hidden />
         </div>
 
-        <p id="gifPreviewStatus" class="gif-preview-status"></p>
+        <p id="exampleGifStatus" class="gif-preview-status"></p>
 
         <footer class="gif-dialog-actions">
-          <button id="gifPreviewSettingsButton" class="action-button gif-preview-settings-button" type="button" aria-label="Gif settings">
-            <span>Gif settings</span>
-            <img src="./images/app/pencil.svg" alt="" class="button-icon" aria-hidden="true" />
-          </button>
-          <button id="gifPreviewSaveButton" class="action-button" type="button" disabled>
-            Save
-          </button>
-          <button class="action-button" value="cancel">
-            Close
-          </button>
+          <button class="action-button" value="cancel">Close</button>
         </footer>
       </form>
     </dialog>
 
     <script src="./js/pixi.min.js"></script>
-    <script src="./js/app.js"></script>
+    <script src="./js/demo.js"></script>
   </body>
 </html>
