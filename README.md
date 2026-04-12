@@ -2,6 +2,8 @@
 
 A local web app for turning iPhone spatial `.HEIC` photos into interactive depth previews and animated GIFs.
 
+Live demo (GitHub Pages): [https://adrian3.github.io/GIFd/][6]
+
 The app extracts:
 - a normalized JPG
 - a depth map PNG
@@ -142,3 +144,4 @@ GIFd/
 [3]:	/Users/adehanft/Desktop/GIFd/images/library
 [4]:	/Users/adehanft/Desktop/GIFd/images/app/demo images
 [5]:	/Users/adehanft/Desktop/GIFd/index.html
+[6]:	https://adrian3.github.io/GIFd/
