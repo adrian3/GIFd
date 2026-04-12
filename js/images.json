@@ -1,0 +1,242 @@
+[
+  {
+    "id": 0,
+    "name": "Img 3589",
+    "comment": "Spatial photo extracted from IMG_3589.HEIC",
+    "url": "img-3589",
+    "image": "./images/library/img-3589.jpg",
+    "thumbnail": "./images/library/img-3589_thumb.jpg",
+    "depthImage": "./images/library/img-3589_depth.png",
+    "sourceHeic": "./images/library/img-3589.HEIC"
+  },
+  {
+    "id": 1,
+    "name": "Img 3590",
+    "comment": "Spatial photo extracted from IMG_3590.HEIC",
+    "url": "img-3590",
+    "image": "./images/library/img-3590.jpg",
+    "thumbnail": "./images/library/img-3590_thumb.jpg",
+    "depthImage": "./images/library/img-3590_depth.png",
+    "sourceHeic": "./images/library/img-3590.HEIC"
+  },
+  {
+    "id": 2,
+    "name": "Img 3591",
+    "comment": "Spatial photo extracted from IMG_3591.HEIC",
+    "url": "img-3591",
+    "image": "./images/library/img-3591.jpg",
+    "thumbnail": "./images/library/img-3591_thumb.jpg",
+    "depthImage": "./images/library/img-3591_depth.png",
+    "sourceHeic": "./images/library/img-3591.HEIC"
+  },
+  {
+    "id": 3,
+    "name": "Img 3592",
+    "comment": "Spatial photo extracted from IMG_3592.HEIC",
+    "url": "img-3592",
+    "image": "./images/library/img-3592.jpg",
+    "thumbnail": "./images/library/img-3592_thumb.jpg",
+    "depthImage": "./images/library/img-3592_depth.png",
+    "sourceHeic": "./images/library/img-3592.HEIC"
+  },
+  {
+    "id": 4,
+    "name": "Img 3594",
+    "comment": "Spatial photo extracted from IMG_3594.HEIC",
+    "url": "img-3594",
+    "image": "./images/library/img-3594.jpg",
+    "thumbnail": "./images/library/img-3594_thumb.jpg",
+    "depthImage": "./images/library/img-3594_depth.png",
+    "sourceHeic": "./images/library/img-3594.HEIC"
+  },
+  {
+    "id": 5,
+    "name": "Img 3595",
+    "comment": "Spatial photo extracted from IMG_3595.HEIC",
+    "url": "img-3595",
+    "image": "./images/library/img-3595.jpg",
+    "thumbnail": "./images/library/img-3595_thumb.jpg",
+    "depthImage": "./images/library/img-3595_depth.png",
+    "sourceHeic": "./images/library/img-3595.HEIC"
+  },
+  {
+    "id": 6,
+    "name": "Img 3596",
+    "comment": "Spatial photo extracted from IMG_3596.HEIC",
+    "url": "img-3596",
+    "image": "./images/library/img-3596.jpg",
+    "thumbnail": "./images/library/img-3596_thumb.jpg",
+    "depthImage": "./images/library/img-3596_depth.png",
+    "sourceHeic": "./images/library/img-3596.HEIC"
+  },
+  {
+    "id": 7,
+    "name": "Img 3597",
+    "comment": "Spatial photo extracted from IMG_3597.HEIC",
+    "url": "img-3597",
+    "image": "./images/library/img-3597.jpg",
+    "thumbnail": "./images/library/img-3597_thumb.jpg",
+    "depthImage": "./images/library/img-3597_depth.png",
+    "sourceHeic": "./images/library/img-3597.HEIC"
+  },
+  {
+    "id": 8,
+    "name": "Img 3598",
+    "comment": "Spatial photo extracted from IMG_3598.HEIC",
+    "url": "img-3598",
+    "image": "./images/library/img-3598.jpg",
+    "thumbnail": "./images/library/img-3598_thumb.jpg",
+    "depthImage": "./images/library/img-3598_depth.png",
+    "sourceHeic": "./images/library/img-3598.HEIC"
+  },
+  {
+    "id": 9,
+    "name": "Img 3599",
+    "comment": "Spatial photo extracted from IMG_3599.HEIC",
+    "url": "img-3599",
+    "image": "./images/library/img-3599.jpg",
+    "thumbnail": "./images/library/img-3599_thumb.jpg",
+    "depthImage": "./images/library/img-3599_depth.png",
+    "sourceHeic": "./images/library/img-3599.HEIC"
+  },
+  {
+    "id": 10,
+    "name": "Img 3600",
+    "comment": "Spatial photo extracted from IMG_3600.HEIC",
+    "url": "img-3600",
+    "image": "./images/library/img-3600.jpg",
+    "thumbnail": "./images/library/img-3600_thumb.jpg",
+    "depthImage": "./images/library/img-3600_depth.png",
+    "sourceHeic": "./images/library/img-3600.HEIC"
+  },
+  {
+    "id": 11,
+    "name": "Img 3601",
+    "comment": "Spatial photo extracted from IMG_3601.HEIC",
+    "url": "img-3601",
+    "image": "./images/library/img-3601.jpg",
+    "thumbnail": "./images/library/img-3601_thumb.jpg",
+    "depthImage": "./images/library/img-3601_depth.png",
+    "sourceHeic": "./images/library/img-3601.HEIC"
+  },
+  {
+    "id": 12,
+    "name": "Img 3602",
+    "comment": "Spatial photo extracted from IMG_3602.HEIC",
+    "url": "img-3602",
+    "image": "./images/library/img-3602.jpg",
+    "thumbnail": "./images/library/img-3602_thumb.jpg",
+    "depthImage": "./images/library/img-3602_depth.png",
+    "sourceHeic": "./images/library/img-3602.HEIC"
+  },
+  {
+    "id": 13,
+    "name": "Img 3603",
+    "comment": "Spatial photo extracted from IMG_3603.HEIC",
+    "url": "img-3603",
+    "image": "./images/library/img-3603.jpg",
+    "thumbnail": "./images/library/img-3603_thumb.jpg",
+    "depthImage": "./images/library/img-3603_depth.png",
+    "sourceHeic": "./images/library/img-3603.HEIC"
+  },
+  {
+    "id": 14,
+    "name": "Img 3604",
+    "comment": "Spatial photo extracted from IMG_3604.HEIC",
+    "url": "img-3604",
+    "image": "./images/library/img-3604.jpg",
+    "thumbnail": "./images/library/img-3604_thumb.jpg",
+    "depthImage": "./images/library/img-3604_depth.png",
+    "sourceHeic": "./images/library/img-3604.HEIC"
+  },
+  {
+    "id": 15,
+    "name": "Img 3605",
+    "comment": "Spatial photo extracted from IMG_3605.HEIC",
+    "url": "img-3605",
+    "image": "./images/library/img-3605.jpg",
+    "thumbnail": "./images/library/img-3605_thumb.jpg",
+    "depthImage": "./images/library/img-3605_depth.png",
+    "sourceHeic": "./images/library/img-3605.HEIC"
+  },
+  {
+    "id": 16,
+    "name": "Img 3606",
+    "comment": "Spatial photo extracted from IMG_3606.HEIC",
+    "url": "img-3606",
+    "image": "./images/library/img-3606.jpg",
+    "thumbnail": "./images/library/img-3606_thumb.jpg",
+    "depthImage": "./images/library/img-3606_depth.png",
+    "sourceHeic": "./images/library/img-3606.HEIC"
+  },
+  {
+    "id": 17,
+    "name": "Img 3607",
+    "comment": "Spatial photo extracted from IMG_3607.HEIC",
+    "url": "img-3607",
+    "image": "./images/library/img-3607.jpg",
+    "thumbnail": "./images/library/img-3607_thumb.jpg",
+    "depthImage": "./images/library/img-3607_depth.png",
+    "sourceHeic": "./images/library/img-3607.HEIC"
+  },
+  {
+    "id": 18,
+    "name": "Img 3608",
+    "comment": "Spatial photo extracted from IMG_3608.HEIC",
+    "url": "img-3608",
+    "image": "./images/library/img-3608.jpg",
+    "thumbnail": "./images/library/img-3608_thumb.jpg",
+    "depthImage": "./images/library/img-3608_depth.png",
+    "sourceHeic": "./images/library/img-3608.HEIC"
+  },
+  {
+    "id": 19,
+    "name": "Img 3633",
+    "comment": "Spatial photo extracted from IMG_3633.HEIC",
+    "url": "img-3633",
+    "image": "./images/library/img-3633.jpg",
+    "thumbnail": "./images/library/img-3633_thumb.jpg",
+    "depthImage": "./images/library/img-3633_depth.png",
+    "sourceHeic": "./images/library/img-3633.HEIC"
+  },
+  {
+    "id": 20,
+    "name": "Img 3634",
+    "comment": "Spatial photo extracted from IMG_3634.HEIC",
+    "url": "img-3634",
+    "image": "./images/library/img-3634.jpg",
+    "thumbnail": "./images/library/img-3634_thumb.jpg",
+    "depthImage": "./images/library/img-3634_depth.png",
+    "sourceHeic": "./images/library/img-3634.HEIC"
+  },
+  {
+    "id": 21,
+    "name": "Img 3635",
+    "comment": "Spatial photo extracted from IMG_3635.HEIC",
+    "url": "img-3635",
+    "image": "./images/library/img-3635.jpg",
+    "thumbnail": "./images/library/img-3635_thumb.jpg",
+    "depthImage": "./images/library/img-3635_depth.png",
+    "sourceHeic": "./images/library/img-3635.HEIC"
+  },
+  {
+    "id": 22,
+    "name": "Img 3669",
+    "comment": "Spatial photo extracted from IMG_3669.HEIC",
+    "url": "img-3669",
+    "image": "./images/library/img-3669.jpg",
+    "thumbnail": "./images/library/img-3669_thumb.jpg",
+    "depthImage": "./images/library/img-3669_depth.png",
+    "sourceHeic": "./images/library/img-3669.HEIC"
+  },
+  {
+    "id": 23,
+    "name": "Img 3670",
+    "comment": "Spatial photo extracted from IMG_3670.HEIC",
+    "url": "img-3670",
+    "image": "./images/library/img-3670.jpg",
+    "thumbnail": "./images/library/img-3670_thumb.jpg",
+    "depthImage": "./images/library/img-3670_depth.png",
+    "sourceHeic": "./images/library/img-3670.HEIC"
+  }
+]

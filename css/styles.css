@@ -1,0 +1,633 @@
+:root {
+  font-size: calc((1vw + 1vh + 0.5vmin) * 0.5);
+  --divider-color: #efefef;
+}
+
+body {
+  overflow: hidden;
+  background-color: #fafafa;
+}
+
+button,
+input,
+select,
+textarea,
+.action-button,
+.image-select-button,
+.image-delete-button,
+.image-export-button {
+  cursor: pointer;
+}
+
+input:disabled,
+select:disabled,
+button:disabled,
+.action-button:disabled {
+  cursor: not-allowed;
+}
+
+.app-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  padding: 12px 18px 8px;
+  background-color: #fff;
+  border-bottom: 1px solid var(--divider-color);
+  backdrop-filter: blur(18px);
+}
+
+.brand {
+  text-align: left;
+}
+
+.brand h1 {
+  margin: 0;
+  text-align: left;
+}
+
+.brand p {
+  margin: 2px 0 0;
+  text-align: left;
+}
+
+.brand .small {
+  color: #ccc;
+  font-size: 0.7em;
+}
+
+.brand .small a,
+.brand .small a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+.brand .small a:hover,
+.brand .small a:focus-visible {
+  color: #999;
+  text-decoration: underline;
+}
+
+.strength-control,
+.mode-control {
+  display: grid;
+  gap: 6px;
+}
+
+.strength-control {
+  min-width: 220px;
+}
+
+.mode-control {
+  min-width: 160px;
+}
+
+.strength-control span,
+.mode-control span {
+  display: block;
+}
+
+.strength-control .strength-label,
+.strength-control .strength-label .strength-value {
+  display: inline;
+}
+
+.strength-control input[type="range"] {
+  width: 100%;
+}
+
+.mode-control select,
+.gif-settings-field input,
+.gif-settings-field select,
+.image-select-button,
+.image-delete-button,
+.image-export-button {
+  border: 1px solid;
+  border-radius: 6px;
+}
+
+.mode-control select {
+  min-width: 160px;
+  padding: 10px 12px;
+}
+
+.viewer-shell,
+#viewer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.viewer-shell {
+  padding: 72px 20px 0 225px;
+}
+
+.image-panel {
+  position: fixed;
+  top: 72px;
+  left: 20px;
+  bottom: 0;
+  z-index: 18;
+  width: min(205px, calc(100vw - 40px));
+  display: flex;
+  flex-direction: column;
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+}
+
+.image-list {
+  overflow: auto;
+  padding: 0;
+}
+
+.image-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px;
+  align-items: center;
+  margin: 0;
+  padding: 5px 0 0;
+  border-bottom: 1px solid var(--divider-color);
+}
+
+.image-actions {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.image-delete-button,
+.image-export-button {
+  border: 1px solid;
+  border-radius: 6px;
+}
+
+.image-select-button {
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 4px;
+  align-items: center;
+  width: 100%;
+  min-width: 0;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 140ms ease;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  margin: 0 0 5px 0;
+}
+
+.image-select-button:hover {
+  transform: translateY(-1px);
+}
+
+.image-thumbnail {
+  display: block;
+  width: 54px;
+  height: 40px;
+  border-radius: 4px;
+  object-fit: cover;
+  margin: 0;
+}
+
+.image-name {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.image-delete-button,
+.image-export-button {
+  height: 34px;
+  min-width: 40px;
+  padding: 0;
+  cursor: pointer;
+  transition: transform 140ms ease;
+}
+
+.image-export-button:hover,
+.image-delete-button:hover {
+  transform: translateY(-1px);
+}
+
+.image-delete-button {
+  display: grid;
+  place-items: center;
+  padding: 0;
+  width: 34px;
+  min-width: 34px;
+  margin: 0 0 5px 0;
+}
+
+.delete-icon {
+  width: 30px;
+  height: 30px;
+  display: block;
+  margin: 0;
+}
+
+.viewer-panel {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  border-radius: 0;
+  background-color: #fff;
+  backdrop-filter: blur(18px);
+  overflow: hidden;
+}
+
+.viewer-stage {
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0 0 20px;
+}
+
+.viewer-controls-bar {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 0;
+}
+
+.viewer-controls-bar .strength-control,
+.viewer-controls-bar .mode-control {
+  width: 200px;
+  max-width: 200px;
+  min-width: 0;
+}
+
+.viewer-controls-bar .action-button {
+  height: 34px;
+  padding: 0 10px;
+  border: 1px solid;
+  border-radius: 6px;
+  margin: 0;
+  align-self: flex-end;
+}
+
+.viewer-controls-bar .mode-control select {
+  height: 34px;
+  padding: 0 28px 0 10px;
+  background-color: #efefef !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.viewer-controls-bar .mode-control {
+  position: relative;
+}
+
+.viewer-controls-bar .mode-control::after {
+  content: "";
+  position: absolute;
+  right: 10px;
+  bottom: 15px;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+
+.viewer-controls-bar .icon-button {
+  width: 34px;
+  min-width: 34px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+
+.viewer-action-buttons {
+  display: flex;
+  align-items: flex-end;
+  gap: 7px;
+}
+
+.button-icon {
+  width: 18px;
+  height: 18px;
+  display: block;
+  margin: 0;
+}
+
+.viewer-controls-bar .icon-button::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 6px);
+  min-width: 220px;
+  padding: 4px 8px;
+  border: 1px solid var(--divider-color);
+  border-radius: 6px;
+  background: #fff;
+  white-space: pre-line;
+  text-align: left;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(2px);
+  transition: opacity 120ms ease, transform 120ms ease;
+}
+
+.viewer-controls-bar .icon-button:hover::after,
+.viewer-controls-bar .icon-button:focus-visible::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+#viewer {
+  width: 100%;
+  height: auto;
+  max-height: 100%;
+  aspect-ratio: 4 / 3;
+  min-height: 0;
+  overflow: hidden;
+}
+
+#viewer canvas {
+  display: block;
+}
+
+.gif-dialog {
+  width: min(360px, calc(100vw - 48px));
+  margin: auto;
+  padding: 0;
+  border: 1px solid var(--divider-color);
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.gif-dialog::backdrop {
+  backdrop-filter: blur(8px);
+}
+
+.gif-dialog-form {
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+
+.gif-dialog-header h2 {
+  margin: 4px 0 0;
+}
+
+.gif-dialog-body {
+  display: grid;
+  gap: 10px;
+  padding: 0 18px;
+}
+
+.gif-settings-field {
+  display: grid;
+  grid-template-columns: 1fr 145px;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+}
+
+.gif-settings-field input,
+.gif-settings-field select {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #efefef;
+}
+
+.gif-settings-field.has-select select {
+  padding-right: 28px;
+  background-color: #efefef !important;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.gif-settings-field.has-select::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-right: 1px solid;
+  border-bottom: 1px solid;
+  transform: translateY(-35%) rotate(45deg);
+  pointer-events: none;
+}
+
+.gif-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 8px 18px;
+  border-top: 1px solid var(--divider-color);
+}
+
+.gif-dialog-header {
+  padding: 8px 18px 0;
+}
+
+.gif-dialog-actions .action-button,
+.drop-zone-actions .action-button {
+  margin: 0;
+}
+
+.gif-dialog-actions .action-button {
+  height: 34px;
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gif-preview-settings-button {
+  gap: 6px;
+}
+
+.gif-preview-dialog {
+  width: min(720px, calc(100vw - 48px));
+}
+
+.gif-preview-form {
+  gap: 0;
+}
+
+.gif-preview-dialog .gif-dialog-header {
+  display: none;
+}
+
+.gif-preview-subtitle {
+  margin: 6px 0 0;
+}
+
+.gif-preview-stage {
+  position: relative;
+  min-height: 260px;
+  border-radius: 8px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.gif-preview-image {
+  display: block;
+  width: 100%;
+  max-height: 60vh;
+  object-fit: contain;
+}
+
+.gif-preview-progress {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 12px;
+  text-align: center;
+}
+
+.gif-preview-progress p {
+  margin: 0;
+}
+
+.gif-spinner {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 3px solid;
+  border-top-width: 3px;
+  animation: gif-spin 0.85s linear infinite;
+}
+
+.gif-preview-status {
+  margin: 0;
+}
+
+.gif-preview-status:empty {
+  display: none;
+}
+
+.gif-preview-dialog .gif-dialog-actions {
+  background: transparent;
+  margin: 0;
+  padding: 10px 18px 18px;
+}
+
+@keyframes gif-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.drop-zone {
+  margin: 10px;
+  padding: 0;
+  border-radius: 8px;
+  transition: transform 140ms ease;
+}
+
+.drop-zone.is-dragover {
+  transform: translateY(-2px) scale(1.01);
+}
+
+.drop-zone-actions {
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.drop-zone-actions .action-button {
+  width: 100%;
+  border: 1px solid;
+  border-radius: 6px;
+  height: 34px;
+  padding: 0 10px;
+  background: #fff;
+  transition: background-color 140ms ease;
+}
+
+.drop-zone-actions .action-button:hover {
+  background: #efefef;
+}
+
+.drop-zone-helper {
+  margin: 3px 0 0;
+  text-align: center;
+  font-size: 0.9em;
+}
+
+@media (max-width: 800px) {
+  body {
+    overflow-y: auto;
+  }
+
+  .app-shell {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .strength-control,
+  .action-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .viewer-controls-bar {
+    width: 100%;
+    justify-content: flex-end;
+    align-items: flex-end;
+  }
+
+  .viewer-controls-bar .action-button {
+    width: auto;
+  }
+
+  .image-panel {
+    position: static;
+    width: 100%;
+    max-height: none;
+    margin: 0;
+    overflow: visible;
+    order: 2;
+  }
+
+  .viewer-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: auto;
+    min-height: calc(100vh - 72px);
+    padding: 72px 12px 12px;
+  }
+
+  .viewer-panel {
+    min-height: 52vh;
+    order: 1;
+  }
+
+  .drop-zone {
+    margin: 12px;
+  }
+}
