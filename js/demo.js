@@ -12,7 +12,12 @@
   const exampleGifStatus = document.getElementById("exampleGifStatus");
 
   const VIEWER_MODE_STORAGE_KEY = "viewerMode";
-  const DEFAULT_STRENGTH_VALUE = 15;
+  const DEFAULT_STRENGTH_VALUE = 2.5;
+  const MAX_PREVIEW_OFFSET_AT_MAX_STRENGTH = 12;
+  const DEPTH_REG_SCALE_X = 1.0;
+  const DEPTH_REG_SCALE_Y = 1.0;
+  const DEPTH_REG_OFFSET_X = 0.0;
+  const DEPTH_REG_OFFSET_Y = 0.0;
   const DEMO_IMAGES = [
     {
       id: 0,
@@ -50,6 +55,7 @@
   let statusMessage = null;
   let strengthDivisor = Number(strengthSlider.value);
   let viewerMode = loadViewerMode();
+  let renderRequestId = 0;
 
   initializeViewer();
   bindEvents();
@@ -83,6 +89,10 @@
   function initializeViewer() {
     const viewportWidth = viewerElement.clientWidth || 800;
     const viewportHeight = viewerElement.clientHeight || 600;
+
+    if (PIXI.settings && PIXI.SCALE_MODES) {
+      PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR;
+    }
 
     app = new PIXI.Application({
       width: viewportWidth,
@@ -144,15 +154,22 @@
     initializeUi();
     showStatus("Loading images...");
 
+    const requestId = ++renderRequestId;
     Promise.all([
       loadTextureFromImage(item.image),
       loadTextureFromImage(item.depthImage)
     ])
       .then(function (textures) {
+        if (requestId !== renderRequestId) {
+          return;
+        }
         hideStatus();
         renderScene(textures[0], textures[1]);
       })
       .catch(function () {
+        if (requestId !== renderRequestId) {
+          return;
+        }
         showStatus("Unable to load this demo image set.");
       });
 
@@ -268,7 +285,18 @@
     return new Promise(function (resolve, reject) {
       const image = new Image();
       image.onload = function () {
-        resolve(PIXI.Texture.from(image));
+        const texture = PIXI.Texture.from(image);
+        const baseTexture = texture.baseTexture;
+        if (baseTexture && PIXI.SCALE_MODES) {
+          baseTexture.scaleMode = PIXI.SCALE_MODES.LINEAR;
+        }
+        if (baseTexture && PIXI.MIPMAP_MODES && "mipmap" in baseTexture) {
+          baseTexture.mipmap = PIXI.MIPMAP_MODES.ON;
+        }
+        if (baseTexture && typeof baseTexture.update === "function") {
+          baseTexture.update();
+        }
+        resolve(texture);
       };
       image.onerror = function () {
         reject(new Error("Image failed to load: " + src));
@@ -277,24 +305,41 @@
     });
   }
 
+  function createParallaxFilter(depthTexture) {
+    depthSprite = new PIXI.Sprite(depthTexture);
+    depthSprite.visible = true;
+    depthSprite.renderable = true;
+    depthSprite.alpha = 0;
+
+    const filter = new PIXI.filters.DisplacementFilter(depthSprite);
+    filter.padding = 60;
+    filter.scale.set(0, 0);
+    return filter;
+  }
+
+  function setParallaxOffset(xValue, yValue) {
+    if (!displacementFilter) {
+      return;
+    }
+    displacementFilter.scale.set(xValue, yValue);
+  }
+
   function renderScene(imageTexture, depthTexture) {
     container.removeChildren();
 
     imageSprite = new PIXI.Sprite(imageTexture);
-    depthSprite = new PIXI.Sprite(depthTexture);
-    displacementFilter = new PIXI.filters.DisplacementFilter(depthSprite);
-    displacementFilter.padding = 40;
-    displacementFilter.scale.set(0, 0);
+    displacementFilter = createParallaxFilter(depthTexture);
 
     container.filters = [displacementFilter];
     container.addChild(imageSprite);
     container.addChild(depthSprite);
+    setParallaxOffset(0, 0);
 
     fitSprites();
   }
 
   function fitSprites() {
-    if (!imageSprite || !depthSprite) {
+    if (!imageSprite) {
       return;
     }
 
@@ -304,24 +349,31 @@
     const viewportAspect = viewportWidth / viewportHeight;
 
     imageSprite.position.set(0, 0);
-    depthSprite.position.set(0, 0);
     imageSprite.scale.set(1, 1);
-    depthSprite.scale.set(1, 1);
 
     if (viewportAspect >= imageAspect) {
       imageSprite.width = viewportWidth;
-      depthSprite.width = viewportWidth;
       imageSprite.scale.y = imageSprite.scale.x;
-      depthSprite.scale.y = depthSprite.scale.x;
       imageSprite.y = (viewportHeight - imageSprite.height) * 0.5;
-      depthSprite.y = (viewportHeight - depthSprite.height) * 0.5;
     } else {
       imageSprite.height = viewportHeight;
-      depthSprite.height = viewportHeight;
       imageSprite.scale.x = imageSprite.scale.y;
-      depthSprite.scale.x = depthSprite.scale.y;
       imageSprite.x = (viewportWidth - imageSprite.width) * 0.5;
-      depthSprite.x = (viewportWidth - depthSprite.width) * 0.5;
+    }
+
+    if (depthSprite) {
+      const depthScaleX = imageSprite.scale.x * DEPTH_REG_SCALE_X;
+      const depthScaleY = imageSprite.scale.y * DEPTH_REG_SCALE_Y;
+      const depthWidth = depthSprite.texture.width * depthScaleX;
+      const depthHeight = depthSprite.texture.height * depthScaleY;
+      const xOffset = DEPTH_REG_OFFSET_X * imageSprite.width;
+      const yOffset = DEPTH_REG_OFFSET_Y * imageSprite.height;
+
+      depthSprite.scale.set(depthScaleX, depthScaleY);
+      depthSprite.position.set(
+        imageSprite.x + (imageSprite.width - depthWidth) * 0.5 + xOffset,
+        imageSprite.y + (imageSprite.height - depthHeight) * 0.5 + yOffset
+      );
     }
   }
 
@@ -348,39 +400,42 @@
 
     const imageCenterX = imageLeft + imageSprite.width * 0.5;
     const imageCenterY = imageTop + imageSprite.height * 0.5;
-    const strengthMultiplier = strengthDivisor / DEFAULT_STRENGTH_VALUE;
-    const x = (imageCenterX - global.x) * strengthMultiplier / DEFAULT_STRENGTH_VALUE;
-    const y = (imageCenterY - global.y) * strengthMultiplier / DEFAULT_STRENGTH_VALUE;
+    const normalizedX = (imageCenterX - global.x) / (imageSprite.width * 0.5);
+    const normalizedY = (imageCenterY - global.y) / (imageSprite.height * 0.5);
+    const clampedX = Math.max(-1, Math.min(1, normalizedX));
+    const clampedY = Math.max(-1, Math.min(1, normalizedY));
+    const strengthRatio = strengthDivisor / 10;
+    const maxOffset = MAX_PREVIEW_OFFSET_AT_MAX_STRENGTH * strengthRatio;
+    const x = clampedX * maxOffset;
+    const y = clampedY * maxOffset;
 
     if (viewerMode === "pan") {
-      displacementFilter.scale.set(x, 0);
+      setParallaxOffset(x, 0);
       return;
     }
 
     if (viewerMode === "tilt") {
-      displacementFilter.scale.set(0, y);
+      setParallaxOffset(0, y);
       return;
     }
 
     if (viewerMode === "diag-tl-br") {
       const diagonal = (x + y) * 0.5;
-      displacementFilter.scale.set(diagonal, diagonal);
+      setParallaxOffset(diagonal, diagonal);
       return;
     }
 
     if (viewerMode === "diag-tr-bl") {
       const diagonal = (x - y) * 0.5;
-      displacementFilter.scale.set(diagonal, -diagonal);
+      setParallaxOffset(diagonal, -diagonal);
       return;
     }
 
-    displacementFilter.scale.set(x, y);
+    setParallaxOffset(x, y);
   }
 
   function resetDisplacement() {
-    if (displacementFilter) {
-      displacementFilter.scale.set(0, 0);
-    }
+    setParallaxOffset(0, 0);
   }
 
   function refreshLayout() {

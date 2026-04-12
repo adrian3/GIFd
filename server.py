@@ -27,6 +27,10 @@ GIF_FRAME_COUNT = 18
 GIF_MAX_DIMENSION = 600
 GIF_DELAY = 5
 GIF_COLORS = 256
+DEPTH_ALIGN_SCALE_X = 1.0
+DEPTH_ALIGN_SCALE_Y = 1.0
+DEPTH_ALIGN_OFFSET_X = 0.0
+DEPTH_ALIGN_OFFSET_Y = 0.0
 
 
 def ensure_image_directories():
@@ -186,6 +190,29 @@ def render_gif_frame(image_path, depth_path, output_path, x_offset, y_offset):
         "option:compose:args",
         f"{x_offset}x{y_offset}",
         "-composite",
+        str(output_path)
+    ])
+
+
+def align_depth_map(source_path, output_path, width, height):
+    scaled_width = max(1, round(width * DEPTH_ALIGN_SCALE_X))
+    scaled_height = max(1, round(height * DEPTH_ALIGN_SCALE_Y))
+    x_offset = round(DEPTH_ALIGN_OFFSET_X * width)
+    y_offset = round(DEPTH_ALIGN_OFFSET_Y * height)
+
+    run_command([
+        "magick",
+        str(source_path),
+        "-filter",
+        "Lanczos",
+        "-resize",
+        f"{scaled_width}x{scaled_height}!",
+        "-gravity",
+        "center",
+        "-background",
+        "black",
+        "-extent",
+        f"{width}x{height}{x_offset:+d}{y_offset:+d}",
         str(output_path)
     ])
 
@@ -451,7 +478,7 @@ def export_parallax_gif(url, settings):
     item = find_item_by_url(url)
     image_path = image_path_from_catalog(item["image"])
     depth_path = image_path_from_catalog(item["depthImage"])
-    strength = max(2.0, min(float(settings.get("viewerStrength", settings.get("strength", 14))), 40.0))
+    strength = max(0.1, min(float(settings.get("viewerStrength", settings.get("strength", 2.5))), 10.0))
     viewer_mode = normalize_viewer_mode(settings.get("viewerMode"))
     mode_label = viewer_mode_label(viewer_mode)
     frame_count = max(8, min(int(settings.get("frameCount", GIF_FRAME_COUNT)), 36))
@@ -469,14 +496,16 @@ def export_parallax_gif(url, settings):
         temp_path = pathlib.Path(temp_dir)
         prepared_image = temp_path / "image.png"
         prepared_depth = temp_path / "depth.png"
+        aligned_depth = temp_path / "depth_aligned.png"
 
         normalize_main_image(image_path, prepared_image, width, height)
         processed_depth_from_source(depth_path, prepared_depth, width, height)
+        align_depth_map(prepared_depth, aligned_depth, width, height)
 
         frame_paths = []
         for index, (x_offset, y_offset) in enumerate(build_gif_offsets(frame_count, strength, viewer_mode)):
             frame_path = temp_path / f"frame_{index:02d}.png"
-            render_gif_frame(prepared_image, prepared_depth, frame_path, x_offset, y_offset)
+            render_gif_frame(prepared_image, aligned_depth, frame_path, x_offset, y_offset)
             frame_paths.append(frame_path)
 
         raw_gif = temp_path / "raw.gif"
