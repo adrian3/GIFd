@@ -16,7 +16,9 @@ ROOT = pathlib.Path(__file__).resolve().parent
 IMAGES_ROOT_DIR = ROOT / "images"
 APP_IMAGES_DIR = IMAGES_ROOT_DIR / "app"
 LIBRARY_IMAGES_DIR = IMAGES_ROOT_DIR / "library"
-CATALOG_PATH = ROOT / "js" / "images.json"
+DEMO_IMAGES_DIR = APP_IMAGES_DIR / "demo images"
+CATALOG_PATH = LIBRARY_IMAGES_DIR / "images.json"
+DEMO_SEED_MARKER_PATH = LIBRARY_IMAGES_DIR / ".demo-seeded"
 HOST = "127.0.0.1"
 PORT = 4173
 MAX_VIEWER_DIMENSION = 2048
@@ -31,12 +33,65 @@ def ensure_image_directories():
     LIBRARY_IMAGES_DIR.mkdir(parents=True, exist_ok=True)
 
 
+def ensure_catalog_file():
+    if not CATALOG_PATH.exists():
+        save_catalog([])
+
+
 def load_catalog():
+    ensure_catalog_file()
     return json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
 
 
 def save_catalog(items):
     CATALOG_PATH.write_text(json.dumps(items, indent=2) + "\n", encoding="utf-8")
+
+
+def seed_demo_images_if_needed():
+    ensure_catalog_file()
+    items = load_catalog()
+    if items:
+        return
+    if DEMO_SEED_MARKER_PATH.exists():
+        return
+
+    demo_stems = ("demo-1", "demo-2", "demo-3")
+    if not DEMO_IMAGES_DIR.exists():
+        return
+
+    for stem in demo_stems:
+        source_image = DEMO_IMAGES_DIR / f"{stem}.jpg"
+        source_thumbnail = DEMO_IMAGES_DIR / f"{stem}_thumb.jpg"
+        source_depth = DEMO_IMAGES_DIR / f"{stem}_depth.png"
+        if not source_image.exists() or not source_thumbnail.exists() or not source_depth.exists():
+            return
+
+    seeded_items = []
+    for index, stem in enumerate(demo_stems):
+        source_image = DEMO_IMAGES_DIR / f"{stem}.jpg"
+        source_thumbnail = DEMO_IMAGES_DIR / f"{stem}_thumb.jpg"
+        source_depth = DEMO_IMAGES_DIR / f"{stem}_depth.png"
+
+        target_image = LIBRARY_IMAGES_DIR / f"{stem}.jpg"
+        target_thumbnail = LIBRARY_IMAGES_DIR / f"{stem}_thumb.jpg"
+        target_depth = LIBRARY_IMAGES_DIR / f"{stem}_depth.png"
+
+        shutil.copy2(source_image, target_image)
+        shutil.copy2(source_thumbnail, target_thumbnail)
+        shutil.copy2(source_depth, target_depth)
+
+        seeded_items.append({
+            "id": index,
+            "name": f"Demo {index + 1}",
+            "comment": "Starter demo image. You can delete this at any time.",
+            "url": stem,
+            "image": catalog_path_for(target_image),
+            "thumbnail": catalog_path_for(target_thumbnail),
+            "depthImage": catalog_path_for(target_depth)
+        })
+
+    save_catalog(seeded_items)
+    DEMO_SEED_MARKER_PATH.write_text("seeded\n", encoding="utf-8")
 
 
 def image_path_from_catalog(path_value):
@@ -640,6 +695,7 @@ class AppHandler(SimpleHTTPRequestHandler):
 
 def main():
     ensure_image_directories()
+    seed_demo_images_if_needed()
     server = ThreadingHTTPServer((HOST, PORT), AppHandler)
     print(f"Serving Depth3DViewer at http://{HOST}:{PORT}")
     print("Drop a spatial HEIC onto the page to import it.")

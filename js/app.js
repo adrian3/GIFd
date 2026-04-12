@@ -204,7 +204,7 @@
   }
 
   function loadImages() {
-    fetch("./js/images.json", { cache: "no-store" })
+    fetch("/api/images", { cache: "no-store" })
       .then(function (response) {
         if (!response.ok) {
           throw new Error("Unable to load image catalog");

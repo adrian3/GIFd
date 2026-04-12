@@ -83,8 +83,9 @@ python3 server.py
 ## File storage
 
 - Bundled/static app assets: [`images/app/`][2]
+- Demo starter images (seeded on first run): [`images/app/demo images/`][4]
 - Imported/generated user assets: [`images/library/`][3]
-- Catalog metadata: [`js/images.json`][4]
+- Local catalog metadata (not committed): `images/library/images.json`
 
 ## Project structure
 
@@ -98,10 +99,10 @@ GIFd/
     styles.css
   js/
     app.js
-    images.json
     pixi.min.js
   images/
     app/
+      demo images/
     library/
 ```
 
@@ -109,6 +110,8 @@ GIFd/
 
 - Run through `python3 server.py`; do not open `index.html` with `file://`.
 - HEIC conversion depends on local native tools listed above.
+- On first run, the app copies 3 demo image sets from `images/app/demo images/` into `images/library/`.
+- `images/library/` is intended for local/runtime files and is ignored by Git (except `.gitkeep`).
 - This is currently optimized for local use.
 
 ## Troubleshooting
@@ -125,4 +128,4 @@ GIFd/
 [1]:	http://127.0.0.1:4173
 [2]:	/Users/adehanft/Desktop/GIFd/images/app
 [3]:	/Users/adehanft/Desktop/GIFd/images/library
-[4]:	/Users/adehanft/Desktop/GIFd/js/images.json
+[4]:	/Users/adehanft/Desktop/GIFd/images/app/demo images
