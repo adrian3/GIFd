@@ -31,6 +31,7 @@ DEPTH_ALIGN_SCALE_X = 1.0
 DEPTH_ALIGN_SCALE_Y = 1.0
 DEPTH_ALIGN_OFFSET_X = 0.0
 DEPTH_ALIGN_OFFSET_Y = 0.0
+GIF_DISPLACEMENT_CALIBRATION = 0.42
 
 
 def ensure_image_directories():
@@ -479,6 +480,7 @@ def export_parallax_gif(url, settings):
     image_path = image_path_from_catalog(item["image"])
     depth_path = image_path_from_catalog(item["depthImage"])
     strength = max(0.1, min(float(settings.get("viewerStrength", settings.get("strength", 2.5))), 10.0))
+    strength = round(strength * GIF_DISPLACEMENT_CALIBRATION, 3)
     viewer_mode = normalize_viewer_mode(settings.get("viewerMode"))
     mode_label = viewer_mode_label(viewer_mode)
     frame_count = max(8, min(int(settings.get("frameCount", GIF_FRAME_COUNT)), 36))
