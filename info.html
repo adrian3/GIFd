@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GIF'd — Info</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    * { margin: 0; }
+
+    :root {
+      --primary:       #cc3300;
+      --primary-focus: #a32900;
+      --canvas:        #ffffff;
+      --parchment:     #fafafa;
+      --ink:           #1d1d1f;
+      --muted:         #555555;
+      --muted-soft:    #7a7a7a;
+      --hairline:      #e0e0e0;
+      --divider:       #f0f0f0;
+      --radius:        4px;
+      --font-serif:    "Vollkorn", Georgia, serif;
+      --font-sans:     "Montserrat", Arial, sans-serif;
+      --font-mono:     ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    body {
+      font-family: var(--font-serif);
+      background: var(--canvas);
+      color: var(--ink);
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .top-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--parchment);
+      border-bottom: 1px solid var(--hairline);
+      height: 44px;
+      display: flex; align-items: center;
+      padding: 0 24px; gap: 8px;
+    }
+    .nav-link {
+      font-family: var(--font-sans); font-size: 12px; font-weight: 400;
+      letter-spacing: 0.08em; color: var(--muted-soft); text-decoration: none;
+    }
+    .nav-link:hover { color: var(--ink); }
+    .nav-sep { font-family: var(--font-sans); font-size: 12px; color: var(--hairline); }
+    .nav-current {
+      font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.08em; color: var(--ink);
+    }
+    .nav-launch {
+      margin-left: auto;
+      font-family: var(--font-sans); font-size: 12px; font-weight: 500;
+      letter-spacing: 0.04em; color: var(--primary); text-decoration: none;
+      padding: 6px 14px; border: 1px solid var(--primary); border-radius: var(--radius);
+      height: 30px; display: flex; align-items: center;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-launch:hover { background: var(--primary); color: #fff; }
+
+    .hero {
+      padding: 72px 24px 56px;
+      max-width: 720px; margin: 0 auto;
+    }
+    .hero-icon {
+      width: 150px; height: 150px;
+      object-fit: cover;
+      border-radius: var(--radius);
+      margin-bottom: 24px;
+      display: block;
+    }
+    .hero-label {
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted-soft); margin-bottom: 16px;
+    }
+    .hero h1 {
+      font-family: var(--font-serif); font-size: 40px; font-weight: 600;
+      line-height: 1.1; letter-spacing: -0.01em; color: var(--ink);
+    }
+    .hero-tagline {
+      margin-top: 16px; font-size: 21px; font-weight: 400;
+      line-height: 1.4; color: var(--muted); letter-spacing: 0.01em;
+    }
+    .hero-meta {
+      margin-top: 24px; display: flex; gap: 24px; flex-wrap: wrap;
+    }
+    .meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .meta-label {
+      font-family: var(--font-sans); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted-soft);
+    }
+    .meta-value { font-family: var(--font-sans); font-size: 12px; color: var(--ink); }
+    .meta-value.server { color: var(--muted); }
+
+    .section-divider {
+      max-width: 720px; margin: 0 auto; padding: 0 24px;
+      border: none; border-top: 1px solid var(--divider);
+    }
+
+    /* Custom content styles — available for use in the custom block */
+    .section {
+      max-width: 720px; margin: 0 auto; padding: 48px 24px;
+      border-bottom: 1px solid var(--divider);
+    }
+    .section:last-of-type { border-bottom: none; }
+    .section-heading {
+      font-family: var(--font-sans); font-size: 11px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--muted-soft); margin-bottom: 20px;
+    }
+    .section p {
+      font-size: 17px; line-height: 1.6;
+      letter-spacing: -0.374px; color: var(--ink);
+    }
+    .section p + p { margin-top: 16px; }
+    .feature-list { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+    .feature-list li {
+      font-size: 17px; line-height: 1.5;
+      letter-spacing: -0.374px; color: var(--ink);
+      padding-left: 20px; position: relative;
+    }
+    .feature-list li::before {
+      content: "—"; position: absolute; left: 0;
+      color: var(--primary); font-weight: 600;
+    }
+    .code-block {
+      margin-top: 20px; background: var(--parchment);
+      border: 1px solid var(--hairline); border-radius: var(--radius);
+      padding: 16px 20px;
+    }
+    .code-block pre {
+      font-family: var(--font-mono); font-size: 13px; line-height: 1.6;
+      color: var(--ink); white-space: pre; overflow-x: auto;
+    }
+    .file-table { width: 100%; border-collapse: collapse; margin-top: 4px; }
+    .file-table tr { border-bottom: 1px solid var(--divider); }
+    .file-table tr:last-child { border-bottom: none; }
+    .file-table td { padding: 10px 0; font-size: 15px; line-height: 1.4; vertical-align: top; }
+    .file-table td:first-child {
+      font-family: var(--font-mono); font-size: 12px; color: var(--ink);
+      width: 200px; padding-right: 24px; white-space: nowrap;
+    }
+    .file-table td:first-child a {
+      color: var(--primary); text-decoration: none;
+    }
+    .file-table td:first-child a:hover { text-decoration: underline; }
+    .file-table td:last-child { color: var(--muted); }
+    .image-strip {
+      margin: 48px 0; overflow-x: auto; display: flex; gap: 3px;
+      padding: 0 24px; scrollbar-width: none;
+    }
+    .image-strip::-webkit-scrollbar { display: none; }
+    .image-strip img {
+      height: 240px; width: auto; display: block; flex-shrink: 0;
+      box-shadow: rgba(0,0,0,0.22) 3px 5px 30px 0;
+    }
+
+    .site-footer {
+      background: var(--parchment); border-top: 1px solid var(--hairline);
+      padding: 28px 24px;
+    }
+    .site-footer-inner {
+      max-width: 720px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 16px; flex-wrap: wrap;
+    }
+    .site-footer p {
+      font-family: var(--font-sans); font-size: 11px;
+      letter-spacing: 0.04em; color: var(--muted-soft);
+    }
+    .footer-launch {
+      font-family: var(--font-sans); font-size: 13px; font-weight: 500;
+      color: var(--primary); text-decoration: none;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .footer-launch:hover { color: var(--primary-focus); }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 28px; }
+      .hero { padding: 48px 16px 40px; }
+      .section { padding: 40px 16px; }
+      .image-strip { padding: 0 16px; }
+      .image-strip img { height: 160px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- BEGIN GENERATED -->
+  <nav class="top-nav">
+    <a href="../index.html" class="nav-link">Ade's Apps</a>
+    <span class="nav-sep">/</span>
+    <span class="nav-current">GIF'd</span>
+    <a href="http://127.0.0.1:4173/" class="nav-launch">Open app</a>
+  </nav>
+
+  <header class="hero">
+    <img src="images/icon.png" alt="GIF'd" class="hero-icon">
+    <div class="hero-label">Tool  &nbsp;·&nbsp;  JavaScript  &nbsp;·&nbsp;  Local server required</div>
+    <h1>GIF'd</h1>
+    <p class="hero-tagline">Creates animated GIFs from iPhone spatial photos with depth-aware compositing.</p>
+    <div class="hero-meta">
+      <div class="meta-item">
+        <span class="meta-label">Language</span>
+        <span class="meta-value">JavaScript, Python</span>
+      </div>
+      <div class="meta-item" id="server-status-item">
+        <span class="meta-label">Server</span>
+        <span class="meta-value" id="server-status-value">
+          <span id="server-dot" style="display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--hairline);margin-right:5px;vertical-align:middle;"></span><span style="color:var(--muted-soft);">Python HTTP server</span>
+        </span>
+      </div>
+      <script>
+        (function() {
+          var statusUrl = "/api/status?url=http://127.0.0.1:4173/";
+          var appId = "gifd";
+          var serverUrl = "http://127.0.0.1:4173/";
+          var hasLaunch = true;
+          var dot = document.getElementById('server-dot');
+          var val = document.getElementById('server-status-value');
+          function setRunning() {
+            dot.style.background = '#22c55e';
+            val.innerHTML = '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#22c55e;margin-right:5px;vertical-align:middle;"></span>'
+              + '<span style="color:var(--ink);">Python HTTP server &mdash; <a href="' + serverUrl + '" style="color:var(--primary);text-decoration:none;">' + serverUrl + '</a></span>';
+          }
+          function setOffline() {
+            dot.style.background = '#f59e0b';
+            var extra = hasLaunch
+              ? ' &mdash; <a href="#" id="launch-btn" style="color:var(--primary);text-decoration:none;">Start server</a>'
+              : ' &mdash; offline';
+            val.innerHTML = '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:#f59e0b;margin-right:5px;vertical-align:middle;"></span>'
+              + '<span style="color:var(--muted-soft);">Python HTTP server' + extra + '</span>';
+            var btn = document.getElementById('launch-btn');
+            if (btn) btn.addEventListener('click', function(e) {
+              e.preventDefault();
+              fetch('/api/launch?id=' + appId).then(function() {
+                btn.textContent = 'Starting…';
+                var poll = setInterval(function() {
+                  fetch(statusUrl).then(function(r) { return r.json(); }).then(function(d) {
+                    if (d.running) { clearInterval(poll); setRunning(); }
+                  });
+                }, 1500);
+                setTimeout(function() { clearInterval(poll); }, 60000);
+              });
+            });
+          }
+          fetch(statusUrl).then(function(r) { return r.json(); })
+            .then(function(d) { d.running ? setRunning() : setOffline(); })
+            .catch(function() { setOffline(); });
+        })();
+      </script>
+      <div class="meta-item">
+        <span class="meta-label">GitHub</span>
+        <span class="meta-value"><a href="https://github.com/adrian3/GIFd" target="_blank" rel="noopener" style="color:var(--primary);text-decoration:none;">adrian3/GIFd</a> &nbsp;(Public)</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">GitHub Pages</span>
+        <span class="meta-value"><a href="https://adrian3.github.io/GIFd/" target="_blank" rel="noopener" style="color:var(--primary);text-decoration:none;">https://adrian3.github.io/GIFd/</a></span>
+      </div>
+    </div>
+  </header>
+
+  <hr class="section-divider">
+<!-- END GENERATED -->
+
+<!-- BEGIN CUSTOM -->
+
+  <section class="section">
+    <div class="section-heading">What it does</div>
+    <ul class="feature-list">
+      <li>Imports iPhone spatial HEIC photos by upload or drag and drop</li>
+      <li>Extracts the RGB image and depth map from each spatial photo</li>
+      <li>Previews depth motion live in the browser with adjustable strength and direction</li>
+      <li>Generates and exports animated GIFs with configurable frame count, size, and dithering</li>
+      <li>Maintains a local thumbnail library with delete controls</li>
+      <li>GitHub Pages hosts a static demo mode with sample images — no server required</li>
+    </ul>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">How to use</div>
+    <p>Start the local server with <code>python3 server.py</code>, then open <strong>http://127.0.0.1:4173</strong> in your browser. Upload a spatial <code>.HEIC</code> file, select it from the library, adjust depth strength and direction, then click Make GIF. Use the settings panel to tune frame count, width, and dithering before saving.</p>
+    <p>Requires <code>python3</code>, <code>libheif</code>, <code>exiftool</code>, and <code>ImageMagick</code> installed via Homebrew.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-heading">Built with</div>
+    <table class="file-table">
+      <tr>
+        <td><a href="https://pixijs.com" target="_blank" rel="noopener">PixiJS</a></td>
+        <td>WebGL renderer — drives the real-time depth preview and direction modes</td>
+      </tr>
+      <tr>
+        <td><a href="https://flask.palletsprojects.com" target="_blank" rel="noopener">Flask</a></td>
+        <td>Python server — handles HEIC conversion, depth extraction, and GIF generation</td>
+      </tr>
+      <tr>
+        <td><a href="https://imagemagick.org" target="_blank" rel="noopener">ImageMagick</a></td>
+        <td>GIF compilation from extracted frames</td>
+      </tr>
+      <tr>
+        <td><a href="https://www.libheif.org" target="_blank" rel="noopener">libheif</a></td>
+        <td>HEIC decoding — extracts image and depth data from spatial photos</td>
+      </tr>
+    </table>
+  </section>
+
+<!-- END CUSTOM -->
+
+<!-- BEGIN GENERATED FOOTER -->
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p><a href="https://adrian3.com" style="color:var(--muted-soft);">Made by Ade</a></p>
+    </div>
+  </footer>
+<!-- END GENERATED FOOTER -->
+
+</body>
+</html>
