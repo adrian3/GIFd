@@ -5,3 +5,4 @@ images/library/**
 !images/library/.gitkeep
 images/gifs/**
 !images/gifs/.gitkeep
+.run/
