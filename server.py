@@ -9,6 +9,7 @@ import subprocess
 import tempfile
 import urllib.parse
 import webbrowser
+import os
 from http import HTTPStatus
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
@@ -21,7 +22,7 @@ GIFS_IMAGES_DIR = IMAGES_ROOT_DIR / "gifs"
 DEMO_IMAGES_DIR = APP_IMAGES_DIR / "demo images"
 CATALOG_PATH = LIBRARY_IMAGES_DIR / "images.json"
 HOST = "127.0.0.1"
-PORT = 4173
+PORT = int(os.environ.get("PORT", "4173"))
 MAX_VIEWER_DIMENSION = 2048
 GIF_FRAME_COUNT = 18
 GIF_MAX_DIMENSION = 600
