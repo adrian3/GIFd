@@ -110,14 +110,14 @@ p {
 
 a,
 a:visited {
-  color: #cc3300;
+  color: #43b3ae;
   text-decoration: none;
 }
 
 a:hover,
 a:focus,
 a:active {
-  color: #8c2f00;
+  color: #2a7a76;
   text-decoration: underline;
 }
 
